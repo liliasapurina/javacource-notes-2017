@@ -26,6 +26,6 @@ public enum MailCodeEnum {
                 return value;
             }
         }
-        throw new Exception(code + "Not found!");
+        throw new UnsupportedOperationException("Code " + code + " not found!");
     }
 }
