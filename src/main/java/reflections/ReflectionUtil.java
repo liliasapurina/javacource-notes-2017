@@ -30,9 +30,18 @@ public class ReflectionUtil {
      */
     public static void printAbsoluteAllMethods(Object o){
         Class<?> type = o.getClass();
-        Method[] methods = type.getSuperclass().getDeclaredMethods();
-        for (Method method : methods) {
-            System.out.println(method);
+        while(type != null){
+            Method[] methods = type.getDeclaredMethods();
+            for (Method method : methods) {
+                System.out.println(method);
+            }
+            type = type.getSuperclass();
+        }
+    }
+
+    public static void printIsInterface(Class type){
+        if(type.isInterface()){
+            System.out.println("Is Interface!");
         }
     }
 }
