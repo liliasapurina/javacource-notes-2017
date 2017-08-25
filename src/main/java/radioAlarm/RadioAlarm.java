@@ -10,5 +10,4 @@ public class RadioAlarm implements Radio, Alarm {
     private Radio radio = new RadioFunctionality();
     @Delegate
     private Alarm alarm = new AlarmFunctionality();
-
 }
