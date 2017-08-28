@@ -10,8 +10,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Evegeny on 28/08/2017.
@@ -47,7 +49,18 @@ public class ObjectFactory {
             return BenchmarkProxyConfigurator.class.newInstance().wrapWithProxy(type, t);
         }
 
-        return t;
+        //return BenchmarkProxyConfigurator.class.newInstance().wrapWithProxyForMethod(type, t, Benchmark.class);
+
+        List<Method> methods = new ArrayList<>();
+        for (Method method : type.getMethods()) {
+            if(method.isAnnotationPresent(Benchmark.class)){
+                methods.add(method);
+            }
+        }
+
+        return BenchmarkProxyConfigurator.class.newInstance().wrapWithProxyForMethod(type, t, methods);
+
+        //return t;
     }
 
 
