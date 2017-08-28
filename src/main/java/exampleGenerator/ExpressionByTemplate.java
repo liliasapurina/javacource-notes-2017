@@ -15,6 +15,7 @@ public class ExpressionByTemplate implements ExpressionGenerator{
     private static final Pattern VARIABLES_PATTERN = Pattern.compile("\\d+[a-z]+");
     private static final Pattern DIGIT_PATTERN = Pattern.compile("\\d+");
 
+    @Override
     public int generateArgument(int digitNumber){
         int min = (int) Math.pow(10, digitNumber - 1);
         int max = (int) Math.pow(10, digitNumber) - 1;
@@ -22,6 +23,7 @@ public class ExpressionByTemplate implements ExpressionGenerator{
         return (int) (Math.random() * ++max) + min;
     }
 
+    @Override
     public String generateExpression(){
         String exerciseTemplate = getRandomTemplate(readTemplates());
         String variable;
@@ -43,6 +45,7 @@ public class ExpressionByTemplate implements ExpressionGenerator{
         return exerciseTemplate;
     }
 
+    @Override
     public double getResult(String expression){
         Expression e = new ExpressionBuilder(expression)
                 .build();

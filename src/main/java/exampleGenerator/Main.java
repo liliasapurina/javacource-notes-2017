@@ -10,7 +10,7 @@ public class Main {
 
         while (reply == JOptionPane.YES_OPTION){
             String expression = expressionGenerator.generateExpression();
-            String answer = JOptionPane.showInputDialog(expression + " = ?");
+            String answer = JOptionPane.showInputDialog(expression + " =");
 
             double expectedAnswer = expressionGenerator.getResult(expression);
             if(Double.valueOf(answer) == expectedAnswer){
