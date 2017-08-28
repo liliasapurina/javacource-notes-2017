@@ -5,8 +5,10 @@ import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class ObjectFactory {
     private Config config = new JavaConfig();
     private Reflections scanner = new Reflections("com.db");
     private List<ObjectConfigurator> objectConfigurators = new ArrayList<>();
+    private List<ProxyConfigurator> proxyConfigurators = new ArrayList<>();
 
     public static ObjectFactory getInstance() {
         return ourInstance;
@@ -36,14 +39,17 @@ public class ObjectFactory {
     @SneakyThrows
     public <T> T createObject(Class<T> type) {
         type = resolveImpl(type);
-        T t = type.newInstance();
-
+        final T t = type.newInstance();
         configure(t);
-
         invokeInitMethod(type, t);
+
+        if (type.isAnnotationPresent(Benchmark.class)) {
+            return BenchmarkProxyConfigurator.class.newInstance().wrapWithProxy(type, t);
+        }
 
         return t;
     }
+
 
     private <T> void invokeInitMethod(Class<T> type, T t) throws IllegalAccessException, InvocationTargetException {
         Set<Method> methods = ReflectionUtils.getAllMethods(type, method -> method.isAnnotationPresent(PostConstruct.class));
@@ -74,6 +80,8 @@ public class ObjectFactory {
         return type;
     }
 }
+
+
 
 
 
