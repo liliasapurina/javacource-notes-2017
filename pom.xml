@@ -68,6 +68,12 @@
             <artifactId>guava</artifactId>
             <version>LATEST</version>
         </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 
     <build>

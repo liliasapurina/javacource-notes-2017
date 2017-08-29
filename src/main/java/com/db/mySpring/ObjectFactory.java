@@ -5,15 +5,11 @@ import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by Evegeny on 28/08/2017.
@@ -35,33 +31,36 @@ public class ObjectFactory {
         for (Class<? extends ObjectConfigurator> aClass : classes) {
             objectConfigurators.add(aClass.newInstance());
         }
+        Set<Class<? extends ProxyConfigurator>> classSet = scanner.getSubTypesOf(ProxyConfigurator.class);
+        for (Class<? extends ProxyConfigurator> aClass : classSet) {
+            proxyConfigurators.add(aClass.newInstance());
+        }
     }
 
 
     @SneakyThrows
     public <T> T createObject(Class<T> type) {
         type = resolveImpl(type);
-        final T t = type.newInstance();
+        T t = type.newInstance();
         configure(t);
         invokeInitMethod(type, t);
 
-        if (type.isAnnotationPresent(Benchmark.class)) {
-            return BenchmarkProxyConfigurator.class.newInstance().wrapWithProxy(type, t);
+        for (ProxyConfigurator proxyConfigurator : proxyConfigurators) {
+            t = proxyConfigurator.wrapWithProxyIfNeeded(t,type);
         }
 
-        //return BenchmarkProxyConfigurator.class.newInstance().wrapWithProxyForMethod(type, t, Benchmark.class);
-
-        List<Method> methods = new ArrayList<>();
-        for (Method method : type.getMethods()) {
-            if(method.isAnnotationPresent(Benchmark.class)){
-                methods.add(method);
-            }
-        }
-
-        return BenchmarkProxyConfigurator.class.newInstance().wrapWithProxyForMethod(type, t, methods);
-
-        //return t;
+        return t;
     }
+
+
+
+
+
+
+
+
+
+
 
 
     private <T> void invokeInitMethod(Class<T> type, T t) throws IllegalAccessException, InvocationTargetException {
