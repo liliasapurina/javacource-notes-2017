@@ -1,9 +1,11 @@
 package com.db.composite;
 
-import lombok.Data;
 import lombok.Getter;
 
+/**
+ * Created by lilia on 29.08.17.
+ */
 @Getter
-public class Room extends CompositeObject {
+public class House extends CompositeObject {
     private final double price = 100.00;
 }

@@ -1,5 +1,9 @@
 package com.db.composite;
 
-public class Shell extends Wardrobe {
-    final double price = 20.00;
+import lombok.Data;
+import lombok.Getter;
+
+@Getter
+public class Shell extends CompositeObject {
+    private final double price = 20.00;
 }

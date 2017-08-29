@@ -1,8 +1,9 @@
 package com.db.composite;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
-public class Wardrobe extends Room {
-    final double price = 50;
+@Getter
+public class Wardrobe extends CompositeObject {
+    private final double price = 50;
 }

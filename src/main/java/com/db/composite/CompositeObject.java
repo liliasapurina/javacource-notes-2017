@@ -4,26 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CompositeObject {
-    double price;
-    static List<CompositeObject> thingsList = new ArrayList<>();
+    private double price;
+    private List<CompositeObject> thingsList = new ArrayList<>();
 
-    public double calculatePrice(){
-        double result = this.getPrice();
-        System.out.println(this.getClass());
-        System.out.println(result);
-        for (CompositeObject compositeObject : CompositeObject.thingsList) {
-            result += compositeObject.getPrice();
-            System.out.println(compositeObject.getClass());
-            System.out.println(compositeObject.getPrice());
+    public double calculatePrice() {
+        double result = getPrice();
+        for (CompositeObject compositeObject : thingsList) {
+            result += compositeObject.calculatePrice();
         }
         return result;
     }
 
-    public void append(CompositeObject o){
-        thingsList.add(o);
-    }
+    protected abstract double getPrice();
 
-    public double getPrice() {
-        return price;
+    public void append(CompositeObject o) {
+        thingsList.add(o);
     }
 }
