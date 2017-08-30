@@ -52,17 +52,6 @@ public class ObjectFactory {
         return t;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     private <T> void invokeInitMethod(Class<T> type, T t) throws IllegalAccessException, InvocationTargetException {
         Set<Method> methods = ReflectionUtils.getAllMethods(type, method -> method.isAnnotationPresent(PostConstruct.class));
         for (Method method : methods) {

@@ -2,10 +2,13 @@ package com.db.mySpring;
 
 import javax.annotation.PostConstruct;
 
+import static com.db.mySpring.Scope.*;
+
 /**
  * Created by Evegeny on 28/08/2017.
  */
 @Benchmark
+@Component(scope = PROTOTYPE)
 public class IRobot {
     private Speaker speaker;
 
