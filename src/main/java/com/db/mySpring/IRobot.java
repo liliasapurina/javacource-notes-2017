@@ -8,7 +8,7 @@ import static com.db.mySpring.Scope.*;
  * Created by Evegeny on 28/08/2017.
  */
 @Benchmark
-@Component(scope = PROTOTYPE)
+@Component(scope = SINGLETON)
 public class IRobot {
     private Speaker speaker;
 

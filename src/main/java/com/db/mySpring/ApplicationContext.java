@@ -5,6 +5,8 @@ import org.reflections.Reflections;
 import java.util.HashMap;
 import java.util.Map;
 
+// В Spring это ClassPathXmlApplicationContext
+// getObject = getBean
 public class ApplicationContext {
     private static ApplicationContext ourInstance = new ApplicationContext("com.db");
     private final Map<Class, ObjectWithScope> components = new HashMap<>();
@@ -16,8 +18,8 @@ public class ApplicationContext {
     public ApplicationContext(String packageName) {
         Reflections scanner = new Reflections(packageName);
         scanner.getTypesAnnotatedWith(Component.class);
-        for (Class component : scanner.getTypesAnnotatedWith(Component.class)) {
-            Scope scope = ((Component) component.getAnnotation(Component.class)).scope();
+        for (Class<?> component : scanner.getTypesAnnotatedWith(Component.class)) {
+            Scope scope = component.getAnnotation(Component.class).scope();
             components.put(component, new ObjectWithScope(scope, component));
         }
     }
